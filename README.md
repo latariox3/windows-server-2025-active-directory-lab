@@ -35,15 +35,21 @@ The purpose of this project is to develop hands-on experience in Windows Server 
 | NAT IP address | 10.0.2.15 |
 | Host-only IP address | 192.168.56.10 |
 | DNS server | 192.168.56.10 |
+### Windows Server 2025 Lab Environment
 
+![Windows Server 2025 Lab](screenshots/Windows-Server-2025-LAB.png)
 ## 4. Implementation
 
 ### Windows Server Installation
+![SERVER01 Renamed](screenshots/02-Server%20Renamed.png)
 
+**Figure 2:** Windows Server 2025 configured with the computer name SERVER01.
 Created a virtual machine in Oracle VirtualBox, attached the Windows Server 2025 installation ISO, and installed the Desktop Experience edition.
 
 ### Network Configuration
+![Static IP Configuration](screenshots/04%20Static%20IP%20Configuration.png)
 
+**Figure 3:** Static IPv4 configuration for the Active Directory lab network.
 Configured two virtual network adapters:
 
 - NAT for external connectivity.
@@ -52,11 +58,65 @@ Configured two virtual network adapters:
 Assigned the host-only interface a static IPv4 address of 192.168.56.10.
 
 ### Active Directory Deployment
+![Prerequisite Checks](screenshots/06%20Prerequisites%20Passed.png)
 
+**Figure 4:** Successful prerequisite checks before promoting SERVER01 to a domain controller.
 Installed the Active Directory Domain Services role and promoted SERVER01 to the first domain controller in a new forest named `cts.test`.
 
 ### DNS Configuration
+### DNS Troubleshooting Investigation
 
+During the configuration of Active Directory Domain Services, I encountered a DNS resolution issue affecting domain controller discovery.
+
+The following troubleshooting steps were performed:
+
+1. Examined DNS Server Event Viewer warnings **4013** and **4017**.
+2. Used `dcdiag /test:DNS /v` to examine domain controller DNS configuration.
+3. Identified an invalid DNS client configuration reported on the NAT adapter.
+4. Updated the DNS client settings to use `192.168.56.10`.
+5. Verified that the `_msdcs.cts.test` zone was active and Active Directory-integrated.
+6. Successfully resolved the zone's SOA record.
+7. Confirmed the LDAP SRV record existed and pointed to `server01.cts.test` on port `389`.
+
+**Current finding:** The LDAP SRV record exists in the DNS zone, but queries for `_ldap._tcp.dc._msdcs.cts.test` continue to return NXDOMAIN.
+
+**Resolution status:** Investigation ongoing.
+### DNS Troubleshooting Evidence
+
+**Figure 5: DNS SRV Record Verification**
+
+![DNS SRV Records](screenshots/Trying%20to%20solve%20DNS%20problem%281%29.png)
+
+Verified that Active Directory SRV records were present in the `_msdcs.cts.test` DNS zone.
+
+**Figure 6: LDAP DNS Resolution Failure**
+
+![DNS Resolution Error](screenshots/dns%20errors.png)
+
+Attempted to resolve `_ldap._tcp.dc._msdcs.cts.test` using PowerShell. The query returned `DNS_ERROR_RCODE_NAME_ERROR`, indicating that the requested DNS name could not be resolved.
+
+**Figure 7: DNS Address Resolution**
+
+![DNS Address Resolution](screenshots/Resolve%20dns%20name.png)
+
+Investigated DNS registration and discovered that `SERVER01.cts.test` was returning both the host-only address `192.168.56.10` and the NAT address `10.0.2.15`.
+
+**Figure 8: DNS Resource Record Inspection**
+
+![DNS Resource Record Inspection](screenshots/This%20is%20what%20is%20displayed%282%29.png)
+
+Compared DNS query results with the A records stored in the `cts.test` zone to investigate inconsistent address resolution.
+
+### Troubleshooting Status
+
+The DNS investigation remains open. The `_msdcs.cts.test` zone and its SRV records have been verified, but the LDAP SRV lookup continues to return NXDOMAIN.
+
+The next objective is to identify why the DNS server is not successfully resolving the existing record.
+### Lessons From Troubleshooting
+
+This investigation provided practical experience using Windows Event Viewer, PowerShell, DNS Manager, and Microsoft's domain controller diagnostic utility.
+
+It also demonstrated the importance of distinguishing between a DNS record existing in the server's database and that record being successfully resolved through DNS queries.
 Configured Windows DNS Server and verified the presence of the `cts.test` and `_msdcs.cts.test` zones.
 
 ## 5. Troubleshooting and Diagnostics

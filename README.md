@@ -132,33 +132,50 @@ Diagnostic activities included:
 
 **Outstanding issue:** DNS queries for `_ldap._tcp.dc._msdcs.cts.test` continue to return NXDOMAIN despite the record appearing in the DNS database.
 
-## 6. Current Results
+## Skills Demonstrated
 
-Successfully deployed a Windows Server 2025 domain controller and established the Active Directory domain `cts.test`.
+Throughout this project, I gained hands-on experience with:
 
-Verified several DNS configuration components, including zone availability and SOA resolution.
+- **Virtualization:** Creating and configuring a Windows Server 2025 virtual machine using Oracle VirtualBox.
+- **Windows Server Administration:** Installing Windows Server, renaming the server, and configuring network interfaces.
+- **Active Directory Domain Services:** Installing AD DS and promoting SERVER01 to the first domain controller in the `cts.test` forest.
+- **DNS Administration:** Examining DNS zones, A records, SOA records, and SRV records.
+- **PowerShell:** Running administrative commands to inspect network configurations and troubleshoot DNS.
+- **Troubleshooting:** Investigating DNS resolution errors using PowerShell, Event Viewer, DNS Manager, and DCDIAG.
+- **Technical Documentation:** Recording configurations, diagnostic results, and troubleshooting findings in GitHub.
 
-Full domain-controller DNS validation remains pending.
+## Project Outcomes
 
-## 7. Skills Practiced
+### Completed
 
-- Virtual machine deployment
-- Windows Server installation
-- Static IP addressing
-- Active Directory Domain Services deployment
-- Domain controller promotion
-- DNS administration
-- PowerShell diagnostics
-- Windows Event Viewer troubleshooting
-- Technical documentation
+- Installed Windows Server 2025 Standard Evaluation.
+- Configured a virtual server environment with NAT and host-only networking.
+- Assigned the static IPv4 address `192.168.56.10` to the host-only adapter.
+- Installed Active Directory Domain Services.
+- Promoted SERVER01 to a domain controller for `cts.test`.
+- Verified the existence of Active Directory-integrated DNS zones.
+- Confirmed the presence of domain controller SRV records.
+- Documented troubleshooting activities with screenshots.
 
-## 8. Next Steps
+### Outstanding Issue
 
-- Resolve the LDAP SRV DNS lookup issue.
-- Complete domain-controller health validation.
-- Organize and publish supporting screenshots.
-- Begin Active Directory user, group, organizational unit, and Group Policy administration.
+DNS queries for `_ldap._tcp.dc._msdcs.cts.test` continue to return NXDOMAIN despite the corresponding SRV record being present in the DNS server's zone data.
 
----
+The issue remains under investigation and has not been documented as resolved.
+
+## Next Steps
+
+- Continue diagnosing the DNS SRV resolution issue.
+- Verify domain controller discovery and Active Directory health.
+- Create organizational units (OUs), user accounts, and security groups.
+- Configure Group Policy Objects (GPOs).
+- Join a Windows client to the domain.
+- Configure shared folders and NTFS permissions.
+
+## Project Status
+
+**Project 1: Initial deployment and documentation completed; DNS troubleshooting ongoing.**
+
+**Project 2: Active Directory User, Group, OU, and Group Policy Administration — Planned.**
 
 *This project was completed in a personal virtual lab for educational and professional development purposes.*

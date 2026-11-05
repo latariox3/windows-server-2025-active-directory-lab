@@ -85,8 +85,7 @@ The following troubleshooting steps were performed:
 
 **Figure 5: DNS SRV Record Verification**
 
-![DNS SRV Records](screenshots/Trying%20to%20solve%20DNS%20problem%281%29.png)
-
+![DNS SRV Records](screenshots/Trying%20to%20solve%20DNS%20problem.png)
 Verified that Active Directory SRV records were present in the `_msdcs.cts.test` DNS zone.
 
 **Figure 6: LDAP DNS Resolution Failure**
@@ -102,8 +101,7 @@ Attempted to resolve `_ldap._tcp.dc._msdcs.cts.test` using PowerShell. The query
 Investigated DNS registration and discovered that `SERVER01.cts.test` was returning both the host-only address `192.168.56.10` and the NAT address `10.0.2.15`.
 
 **Figure 8: DNS Resource Record Inspection**
-
-![DNS Resource Record Inspection](screenshots/This%20is%20what%20is%20displayed%282%29.png)
+![DNS Resource Record Inspection](screenshots/This%20is%20what%20is%20displayed.png)
 
 Compared DNS query results with the A records stored in the `cts.test` zone to investigate inconsistent address resolution.
 
